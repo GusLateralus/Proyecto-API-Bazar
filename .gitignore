@@ -1,0 +1,69 @@
+# --- Java ---
+*.class
+*.log
+*.ctxt
+*.iml
+*.ipr
+*.iws
+
+# --- Maven ---
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+
+# --- Gradle ---
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- STS / IntelliJ / Eclipse ---
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+*.sw?
+*.bak
+*.tmp
+*.DS_Store
+*.orig
+*.rej
+*.sublime*
+
+# --- OS / general ---
+Thumbs.db
+.DS_Store
+*.log
+*.class
+*.jar
+*.war
+*.ear
+
+# --- Logs ---
+logs/
+*.log
+hs_err_pid*
+
+# --- Application properties (si manejas uno por entorno) ---
+# Si quieres ignorar el archivo con datos sensibles
+# puedes hacer esto si vas a manejar variables locales
+application.properties
+application.yml
+application-dev.properties
+application-prod.properties
+
+# --- BBDD ---
+*.mv.db
+*.h2.db
+
+# --- Oracle Wallet (si usas autenticación con wallet) ---
+*.zip
+*.json
+wallet_*/
+
+# --- Others ---
+.env
+*.db
+*.sqlite
+*.bak
+*.tmp
