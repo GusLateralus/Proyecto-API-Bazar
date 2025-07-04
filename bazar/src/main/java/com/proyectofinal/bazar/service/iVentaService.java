@@ -1,13 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
+
 package com.proyectofinal.bazar.service;
 
-/**
- *
- * @author Oscar-PC
- */
+import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
+import com.proyectofinal.bazar.model.Producto;
+import com.proyectofinal.bazar.model.Venta;
+import java.time.LocalDate;
+import java.util.List;
+
+
 public interface iVentaService {
+    
+    // Create
+    public String saveVenta(Venta venta);
+    
+    // Read
+    // Una sola venta:
+    public Venta findVenta(Long id_venta);
+    
+    // Muchos clientes:
+    public List<Venta> traerVentas();
+    
+    //Update
+    public String updateVenta(Venta venta);
+    
+    // Delete
+    public void deleteVenta(Long id_venta); 
+    
+    // Lista de productos de una determinada venta:
+    public List<Producto> productosDeUnaVenta(Long id_venta);
+    
+    // Suma de monto y total de ventas:
+    public String sumaMontoYVentas(LocalDate fecha_venta);
+    
+    // Atributos del DTO de la venta con el monto más alto
+    public VentaProductClienteDTO traerMontoMasAlto(List<Venta> listaVentas);
     
 }

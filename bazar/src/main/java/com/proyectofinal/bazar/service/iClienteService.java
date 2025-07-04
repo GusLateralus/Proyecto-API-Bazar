@@ -1,13 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
+
 package com.proyectofinal.bazar.service;
 
-/**
- *
- * @author Oscar-PC
- */
+import com.proyectofinal.bazar.model.Cliente;
+import java.util.List;
+
+
 public interface iClienteService {
+
+    // Create
+    public String saveCliente(Cliente clien);
+    
+    // Read
+    // Un solo cliente:
+    public Cliente findCliente(Long id_cliente);
+    
+    // Muchos clientes:
+    public List<Cliente> traerClientes();
+    
+    //Update
+    public String updateCliente(Cliente clien);
+    
+    // Delete
+    public void deleteCliente(Long id_cliente); 
+
     
 }
