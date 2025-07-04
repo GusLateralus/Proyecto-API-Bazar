@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
@@ -20,9 +22,16 @@ public class Venta {
     private Long codigo_venta;
     private LocalDate fecha_venta;
     private double total;
-    @OneToMany
+    // Relación N a N porque así un producto puede estar en muchas ventas
+    @ManyToMany
+    @JoinTable(
+        name = "venta_producto",
+        joinColumns = @JoinColumn(name = "codigo_venta"),
+        inverseJoinColumns = @JoinColumn(name = "codigo_producto")
+    )
     private List<Producto> listaProductos; 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
     private Cliente unCliente;
     
     public Venta()
