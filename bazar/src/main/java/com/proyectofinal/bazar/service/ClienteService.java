@@ -16,27 +16,30 @@ public class ClienteService implements iClienteService{
 
     @Override
     public String saveCliente(Cliente clien) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        clienteRepo.save(clien);
+        return "Datos del cliente guardados con éxito";
     }
 
     @Override
     public Cliente findCliente(Long id_cliente) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return clienteRepo.findById(id_cliente).orElse(null);
     }
 
     @Override
     public List<Cliente> traerClientes() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return clienteRepo.findAll();
+        
     }
 
     @Override
     public String updateCliente(Cliente clien) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.saveCliente(clien);
+        return "Datos del cliente actualizados con éxito";
     }
 
     @Override
     public void deleteCliente(Long id_cliente) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        clienteRepo.deleteById(id_cliente);
     }
     
 }

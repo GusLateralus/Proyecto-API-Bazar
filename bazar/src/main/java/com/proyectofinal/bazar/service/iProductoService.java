@@ -24,7 +24,7 @@ public interface iProductoService {
     public void deleteProducto(Long id_producto); 
     
     // Productos cuya cantidad disponible sea menor a 5:
-    public List<Producto> productosDisponiblesMenores5(Producto produc);
+    public List<Producto> productosDisponiblesMenores5();
     
     
 }

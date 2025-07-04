@@ -6,6 +6,7 @@ import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
 import com.proyectofinal.bazar.repository.iVentaRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,32 +19,38 @@ public class VentaService implements iVentaService{
 
     @Override
     public String saveVenta(Venta venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ventaRepo.save(venta);
+        return "Datos de venta guardados con éxito";
     }
 
     @Override
     public Venta findVenta(Long id_venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return ventaRepo.findById(id_venta).orElse(null);
     }
 
     @Override
     public List<Venta> traerVentas() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return ventaRepo.findAll();
     }
 
     @Override
     public String updateVenta(Venta venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.saveVenta(venta);
+        return "Datos de venta actualizados con éxito";
     }
 
     @Override
     public void deleteVenta(Long id_venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ventaRepo.deleteById(id_venta);
     }
 
+    // Traer los productos de una venta determinada:
     @Override
     public List<Producto> productosDeUnaVenta(Long id_venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
+        
+        
+        
     }
 
     @Override
