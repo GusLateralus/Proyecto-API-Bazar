@@ -1,6 +1,7 @@
 
 package com.proyectofinal.bazar.service;
 
+import com.proyectofinal.bazar.dto.ResumenVentasDTO;
 import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
@@ -47,21 +48,65 @@ public class VentaService implements iVentaService{
     // Traer los productos de una venta determinada:
     @Override
     public List<Producto> productosDeUnaVenta(Long id_venta) {
-        return null;
+        
+        Venta venta = ventaRepo.findById(id_venta).orElse(null);
+        
+        if(venta != null)
+        {
+            return venta.getListaProductos();
+        }
+        else{
+            return new ArrayList<>();
+        }
+    }
+
+    // Obtener la sumatoria del monto y también la cantidad total de ventas de un determinado día
+    @Override
+    public ResumenVentasDTO sumaMontoYVentas(LocalDate fecha_venta) {
+        
+        List<Venta> ventasPorFecha = this.findVentaByDate(fecha_venta);
+        ResumenVentasDTO montoYtotalVentas = new ResumenVentasDTO();
+        double total=0;
+        int cantidadVentas=ventasPorFecha.size();
         
         
+        for(Venta venta : ventasPorFecha)
+        {
+            total+=venta.getTotal();
         
+        }
+        
+        montoYtotalVentas.setTotal(total);
+        montoYtotalVentas.setTotalVentas(cantidadVentas);
+        
+        
+        return montoYtotalVentas;
+    
     }
 
     @Override
-    public String sumaMontoYVentas(LocalDate fecha_venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Venta> findVentaByDate(LocalDate fecha_venta) {
+        
+        List<Venta> listaVentas = ventaRepo.findAll();
+        List<Venta> ventasPorFecha = new ArrayList<>();
+        
+        for(Venta venta : listaVentas)
+        {
+            if(venta.getFecha_venta().isEqual(fecha_venta))
+            {
+                ventasPorFecha.add(venta);
+            }
+        
+        }
+        
+        
+        return ventasPorFecha;
     }
 
+    
     @Override
     public VentaProductClienteDTO traerMontoMasAlto(List<Venta> listaVentas) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
     
 }
