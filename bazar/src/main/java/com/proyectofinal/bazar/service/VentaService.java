@@ -103,10 +103,45 @@ public class VentaService implements iVentaService{
         return ventasPorFecha;
     }
 
-    
+    /*Obtener el codigo_venta, total, cantidad de productos, nombre del cliente,
+    apellido del cliente de la venta con el monto más alto de todos.
+    */
     @Override
-    public VentaProductClienteDTO traerMontoMasAlto(List<Venta> listaVentas) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public VentaProductClienteDTO traerMontoMasAlto() {
+        
+        List<Venta> listaVentas = ventaRepo.findAll();
+        VentaProductClienteDTO ventaDTO = new VentaProductClienteDTO();
+        Venta ventaMaxima = null;
+        
+
+        double maxVenta = Double.MIN_VALUE;
+        
+        for(Venta venta : listaVentas)
+        {
+            if(venta.getTotal() > maxVenta)
+            {
+                maxVenta = venta.getTotal();
+                ventaMaxima = venta;
+            }
+            
+        }
+        
+        // Si no encuentra una ventaMaxima (porque no hay ventas) entonces arroja null
+        if( ventaMaxima==null)
+        {
+            return null;
+        }
+        
+        else{
+        
+        ventaDTO.setCodigo_venta(ventaMaxima.getCodigo_venta());
+        ventaDTO.setCantidad_productos(ventaMaxima.getListaProductos().size());
+        ventaDTO.setNombre_cliente(ventaMaxima.getUnCliente().getNombre());
+        ventaDTO.setApellido_cliente(ventaMaxima.getUnCliente().getApellido());
+        return ventaDTO;
+        }
+        
+       
     }
     
 }

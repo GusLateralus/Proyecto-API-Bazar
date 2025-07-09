@@ -36,6 +36,6 @@ public interface iVentaService {
     public ResumenVentasDTO sumaMontoYVentas(LocalDate fecha_venta);
     
     // Atributos del DTO de la venta con el monto más alto
-    public VentaProductClienteDTO traerMontoMasAlto(List<Venta> listaVentas);
+    public VentaProductClienteDTO traerMontoMasAlto();
     
 }
