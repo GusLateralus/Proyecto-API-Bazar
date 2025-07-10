@@ -5,6 +5,7 @@ import com.proyectofinal.bazar.dto.ResumenVentasDTO;
 import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
+//import com.proyectofinal.bazar.repository.iProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,9 +18,42 @@ public class VentaService implements iVentaService{
     
     @Autowired
     private iVentaRepository ventaRepo;
+    
+    /*@Autowired
+    private iProductoRepository productRepo;*/
+    
 
     @Override
     public String saveVenta(Venta venta) {
+        // Implementamos la funcionalidad para reducir el stock de los productos vendidos.
+        /*List<Producto> listaProductos = venta.getListaProductos();
+        List<String> productosNoDisponibles;
+        productosNoDisponibles = new ArrayList<>(); // Sólo así se quitó el warning
+        
+        for(Producto product : listaProductos)
+        {
+            if(product.getCantidad_disponible()==0)
+            {
+                // Aquí la idea es mostrar el listado o un mensaje con los productos no disponibles
+                productosNoDisponibles.add(product.getNombre());
+                
+            }
+            
+            else
+            { 
+                // Si están disponibles, actualizamos el stock.
+                // En teoría, debería poder venderse más de una unidad de un producto en una venta
+                // debes revisar cómo hacerlo
+                product.setCantidad_disponible(product.getCantidad_disponible()-1);
+                productRepo.save(product);
+            
+            }
+        
+        }
+        */
+        
+        
+        // Podrías retornar un JSON, eso creo que serviría como si fuera tu ticket de compra 
         ventaRepo.save(venta);
         return "Datos de venta guardados con éxito";
     }
