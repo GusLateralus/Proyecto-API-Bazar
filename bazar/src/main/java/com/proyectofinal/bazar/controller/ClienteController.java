@@ -47,8 +47,8 @@ public class ClienteController {
         return clienteServ.updateCliente(cliente);
     }
     
-    // Eliminar un producto:
-    @DeleteMapping("clientes/eliminar/{id_producto}")
+    // Eliminar un cliente:
+    @DeleteMapping("clientes/eliminar/{id_cliente}")
     public void deleteCliente(@PathVariable Long id_cliente)
     {
         clienteServ.deleteCliente(id_cliente);
