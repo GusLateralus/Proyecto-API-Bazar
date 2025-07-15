@@ -5,11 +5,12 @@ import com.proyectofinal.bazar.dto.ResumenVentasDTO;
 import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
-//import com.proyectofinal.bazar.repository.iProductoRepository;
+import com.proyectofinal.bazar.repository.iProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,43 +20,69 @@ public class VentaService implements iVentaService{
     @Autowired
     private iVentaRepository ventaRepo;
     
-    /*@Autowired
-    private iProductoRepository productRepo;*/
+    @Autowired
+    private iProductoRepository productRepo;
     
 
     @Override
     public String saveVenta(Venta venta) {
         // Implementamos la funcionalidad para reducir el stock de los productos vendidos.
-        /*List<Producto> listaProductos = venta.getListaProductos();
+        // La lista de productos que viene es la del JSON, por lo que, cada producto viene como un objeto incompleto
+        // Está bien, la idea es llenar con puros IDs, pero entonces debes traer el objeto completo para operar bien
+        List<Producto> listaProductos = venta.getListaProductos();
         List<String> productosNoDisponibles;
         productosNoDisponibles = new ArrayList<>(); // Sólo así se quitó el warning
+        List<Producto> productosVendidos = new ArrayList<>(); // Lista para productos vendidos
+        
         
         for(Producto product : listaProductos)
         {
-            if(product.getCantidad_disponible()==0)
+            // Traemos todo el objeto en una colección para poder operar con él
+            Optional<Producto> productoEnBD = productRepo.findById(product.getCodigo_producto());
+            
+            if(productoEnBD.isPresent())
             {
-                // Aquí la idea es mostrar el listado o un mensaje con los productos no disponibles
-                productosNoDisponibles.add(product.getNombre());
-                
+                Producto p = productoEnBD.get();
+                //System.out.println("Cantidad disponible del producto: "+product.getCantidad_disponible());
+                // Imprime 0.0, es porque no traes el objeto completo, por eso siempre entra en el if y parece que no hace nada
+                if(p.getCantidad_disponible()<=0)
+                {
+                    // Aquí la idea es mostrar el listado o un mensaje con los productos no disponibles
+                    productosNoDisponibles.add(p.getNombre());
+
+                }
+
+                else
+                { 
+                    // Si están disponibles, actualizamos el stock.
+                    p.setCantidad_disponible(p.getCantidad_disponible()-1);
+                    productRepo.save(p);
+                    productosVendidos.add(p);
+
+                }
             }
             
             else
-            { 
-                // Si están disponibles, actualizamos el stock.
-                // En teoría, debería poder venderse más de una unidad de un producto en una venta
-                // debes revisar cómo hacerlo
-                product.setCantidad_disponible(product.getCantidad_disponible()-1);
-                productRepo.save(product);
-            
+            {
+                productosNoDisponibles.add("Producto con ID"+product.getCodigo_producto()+"no encontrado");
+                
             }
-        
         }
-        */
+        
+        venta.setListaProductos(productosVendidos);
         
         
         // Podrías retornar un JSON, eso creo que serviría como si fuera tu ticket de compra 
         ventaRepo.save(venta);
-        return "Datos de venta guardados con éxito";
+        
+        if(productosNoDisponibles.isEmpty()){
+        
+            return "Datos de venta guardados con éxito";
+        }
+        else
+        {
+            return "Venta registrada parcialmente. Sin stock: "+String.join(", ", productosNoDisponibles);
+        }
     }
 
     @Override

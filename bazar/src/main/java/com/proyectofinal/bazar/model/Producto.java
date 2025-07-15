@@ -1,6 +1,8 @@
 
 package com.proyectofinal.bazar.model;
 
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+//import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class Producto {
     private double cantidad_disponible;
     
     @ManyToMany(mappedBy = "listaProductos")
+    //@JsonManagedReference
     private List<Venta> ventas = new ArrayList<>();
     
     
