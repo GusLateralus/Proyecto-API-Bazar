@@ -7,7 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+//import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -23,9 +24,8 @@ public class Producto {
     private double costo;
     private double cantidad_disponible;
     
-    @ManyToMany(mappedBy = "listaProductos")
-    //@JsonManagedReference
-    private List<Venta> ventas = new ArrayList<>();
+    @OneToMany(mappedBy = "producto")
+    private List<VentaProducto> ventas = new ArrayList<>();
     
     
     public Producto()
@@ -34,7 +34,7 @@ public class Producto {
     }
 
     public Producto(Long codigo_producto, String nombre, double costo, double cantidad_disponible,
-                    List<Venta> ventas) {
+                    List<VentaProducto> ventas) {
         this.codigo_producto = codigo_producto;
         this.nombre = nombre;
         this.costo = costo;
