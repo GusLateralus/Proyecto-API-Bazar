@@ -5,7 +5,9 @@ import com.proyectofinal.bazar.dto.ResumenVentasDTO;
 import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
+import com.proyectofinal.bazar.model.VentaProducto;
 import com.proyectofinal.bazar.repository.iProductoRepository;
+import com.proyectofinal.bazar.repository.iVentaProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,22 +25,26 @@ public class VentaService implements iVentaService{
     @Autowired
     private iProductoRepository productRepo;
     
+    @Autowired
+    private iVentaProductoRepository ventaProductRepo; 
+    
 
     @Override
     public String saveVenta(Venta venta) {
         // Implementamos la funcionalidad para reducir el stock de los productos vendidos.
         // La lista de productos que viene es la del JSON, por lo que, cada producto viene como un objeto incompleto
         // Está bien, la idea es llenar con puros IDs, pero entonces debes traer el objeto completo para operar bien
-        List<Producto> listaProductos = venta.getListaProductos();
+        List<VentaProducto> listaProductosIntermedia = venta.getListaProductos();
         List<String> productosNoDisponibles;
         productosNoDisponibles = new ArrayList<>(); // Sólo así se quitó el warning
-        List<Producto> productosVendidos = new ArrayList<>(); // Lista para productos vendidos
+        List<Producto> productosVendidos; // Lista para productos vendidos
+        productosVendidos = new ArrayList<>();
         
         
-        for(Producto product : listaProductos)
+        for(VentaProducto elemento : listaProductosIntermedia)
         {
             // Traemos todo el objeto en una colección para poder operar con él
-            Optional<Producto> productoEnBD = productRepo.findById(product.getCodigo_producto());
+            Optional<Producto> productoEnBD = productRepo.findById(elemento.getProducto().getCodigo_producto());
             
             if(productoEnBD.isPresent())
             {
@@ -55,21 +61,26 @@ public class VentaService implements iVentaService{
                 else
                 { 
                     // Si están disponibles, actualizamos el stock.
-                    p.setCantidad_disponible(p.getCantidad_disponible()-1);
+                    p.setCantidad_disponible(p.getCantidad_disponible()-elemento.getCantidadVendida());
                     productRepo.save(p);
                     productosVendidos.add(p);
-
+                    
+                    // Ahora toca actualizar la información en venta producto
+                    elemento.setVenta(venta);
+                    elemento.setProducto(p);
+                    elemento.setCantidadVendida(elemento.getCantidadVendida());
+                    ventaProductRepo.save(elemento);
                 }
             }
             
             else
             {
-                productosNoDisponibles.add("Producto con ID"+product.getCodigo_producto()+"no encontrado");
+                productosNoDisponibles.add("Producto con ID"+elemento.getProducto().getCodigo_producto()+"no encontrado");
                 
             }
         }
         
-        venta.setListaProductos(productosVendidos);
+        venta.setListaProductos(listaProductosIntermedia);
         
         
         // Podrías retornar un JSON, eso creo que serviría como si fuera tu ticket de compra 
@@ -111,14 +122,24 @@ public class VentaService implements iVentaService{
     public List<Producto> productosDeUnaVenta(Long id_venta) {
         
         Venta venta = ventaRepo.findById(id_venta).orElse(null);
+        List<Producto> listaProductos = new ArrayList<>();
         
         if(venta != null)
         {
-            return venta.getListaProductos();
+            for(VentaProducto elemento : venta.getListaProductos())
+            {
+                Producto product = elemento.getProducto();
+                listaProductos.add(product);
+            
+            }
+            
+            return listaProductos;
         }
+        
         else{
             return new ArrayList<>();
         }
+        
     }
 
     // Obtener la sumatoria del monto y también la cantidad total de ventas de un determinado día
