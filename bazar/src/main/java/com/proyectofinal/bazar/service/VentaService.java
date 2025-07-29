@@ -1,15 +1,15 @@
 
 package com.proyectofinal.bazar.service;
 
-import com.proyectofinal.bazar.dto.ResumenVentasDTO;
-import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
+//import com.proyectofinal.bazar.dto.ResumenVentasDTO;
+//import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
 import com.proyectofinal.bazar.model.VentaProducto;
 import com.proyectofinal.bazar.repository.iProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaRepository;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -143,7 +143,7 @@ public class VentaService implements iVentaService{
     }
 
     // Obtener la sumatoria del monto y también la cantidad total de ventas de un determinado día
-    @Override
+    /*@Override
     public ResumenVentasDTO sumaMontoYVentas(LocalDate fecha_venta) {
         
         List<Venta> ventasPorFecha = this.findVentaByDate(fecha_venta);
@@ -164,9 +164,9 @@ public class VentaService implements iVentaService{
         
         return montoYtotalVentas;
     
-    }
+    }*/
 
-    @Override
+    /*@Override
     public List<Venta> findVentaByDate(LocalDate fecha_venta) {
         
         List<Venta> listaVentas = ventaRepo.findAll();
@@ -183,12 +183,13 @@ public class VentaService implements iVentaService{
         
         
         return ventasPorFecha;
-    }
+    }*/
 
     /*Obtener el codigo_venta, total, cantidad de productos, nombre del cliente,
     apellido del cliente de la venta con el monto más alto de todos.
     */
-    @Override
+    
+    /*@Override
     public VentaProductClienteDTO traerMontoMasAlto() {
         
         List<Venta> listaVentas = ventaRepo.findAll();
@@ -225,6 +226,6 @@ public class VentaService implements iVentaService{
         }
         
        
-    }
+    }*/
     
 }

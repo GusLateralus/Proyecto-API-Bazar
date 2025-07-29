@@ -26,15 +26,23 @@ public class VentaProducto {
     private Producto producto;
     
     private int cantidadVendida;
+    
+    // Copia  del precio unitario
+    private double precioUnitario;
+    
+    // Total agregado
+    private double total;
 
     public VentaProducto() {
     }
 
-    public VentaProducto(VentaProductoID id, Venta venta, Producto producto, int cantidadVendida) {
+    public VentaProducto(VentaProductoID id, Venta venta, Producto producto, int cantidadVendida, double precioUnitario) {
         this.id = id;
         this.venta = venta;
         this.producto = producto;
         this.cantidadVendida = cantidadVendida;
+        this.precioUnitario = precioUnitario;
+        this.total = cantidadVendida*precioUnitario;
     }
     
     

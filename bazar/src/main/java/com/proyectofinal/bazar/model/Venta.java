@@ -24,7 +24,7 @@ public class Venta {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long codigo_venta;
     private LocalDate fecha_venta;
-    private double total;
+    //private double total;
     // Relación N a N porque así un producto puede estar en muchas ventas
     @OneToMany(mappedBy="venta")
     private List<VentaProducto> listaProductos; 
@@ -38,10 +38,10 @@ public class Venta {
     
     }
 
-    public Venta(Long codigo_venta, LocalDate fecha_venta, double total, List<VentaProducto> listaProductos, Cliente unCliente) {
+    public Venta(Long codigo_venta, LocalDate fecha_venta, List<VentaProducto> listaProductos, Cliente unCliente) {
         this.codigo_venta = codigo_venta;
         this.fecha_venta = fecha_venta;
-        this.total = total;
+        //this.total = total;
         this.listaProductos = listaProductos;
         this.unCliente = unCliente;
     }

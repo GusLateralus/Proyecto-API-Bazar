@@ -1,12 +1,12 @@
 
 package com.proyectofinal.bazar.controller;
 
-import com.proyectofinal.bazar.dto.ResumenVentasDTO;
-import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
+//import com.proyectofinal.bazar.dto.ResumenVentasDTO;
+//import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
 import com.proyectofinal.bazar.service.iVentaService;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -66,7 +66,7 @@ public class VentaController {
     }
     
     // Suma de monto y total de ventas por una fecha determinada:
-    @GetMapping("ventas/{fecha_venta}")
+    /*@GetMapping("ventas/{fecha_venta}")
     public ResumenVentasDTO traerSumaMontoYVentas(@PathVariable LocalDate fecha_venta)
     {
         return ventaServ.sumaMontoYVentas(fecha_venta);
@@ -77,7 +77,7 @@ public class VentaController {
     public VentaProductClienteDTO traerVentaMayor()
     {
         return ventaServ.traerMontoMasAlto();
-    }
+    }*/
     
     
 }
