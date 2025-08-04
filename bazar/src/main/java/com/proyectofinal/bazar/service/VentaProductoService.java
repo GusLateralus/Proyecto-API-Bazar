@@ -52,25 +52,29 @@ public class VentaProductoService implements iVentaProductoService{
     @Override
     public ResumenVentasDTO sumaMontoYVentas(LocalDate fecha_venta) {
         
-        /*List<Venta> ventasPorFecha = .findVentaByDate(fecha_venta);
+        List<Venta> ventasPorFecha = this.findVentaByDate(fecha_venta);
         ResumenVentasDTO montoYtotalVentas = new ResumenVentasDTO();
-        double total=0;
-        int cantidadVentas=ventasPorFecha.size();
+        double monto=0;
+        int cantidadTotalVentas=ventasPorFecha.size();
+        //List<VentaProducto> listaTablaIntermedia;
         
         
         for(Venta venta : ventasPorFecha)
         {
-            total+=venta.getTotal();
-        
+            //listaTablaIntermedia = venta.getListaProductos();
+            
+            for(VentaProducto vp : venta.getListaProductos()){
+            
+                monto+=vp.getTotal();
+            
+            }
+            
         }
         
-        montoYtotalVentas.setTotal(total);
-        montoYtotalVentas.setTotalVentas(cantidadVentas);
+        montoYtotalVentas.setMonto(monto);
+        montoYtotalVentas.setCantidadTotalVentas(cantidadTotalVentas);
         
-        
-        return montoYtotalVentas;*/
-        return null;
-    
+        return montoYtotalVentas;
     }
 
     @Override
