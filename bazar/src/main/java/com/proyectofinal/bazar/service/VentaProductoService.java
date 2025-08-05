@@ -131,7 +131,7 @@ public class VentaProductoService implements iVentaProductoService{
         double montoMaximo= 0;
         //List<Venta> listaVentas = new ArrayList<>();
         
-        double maxVenta = Double.MIN_VALUE;
+        //double maxVenta = Double.MIN_VALUE;
         
         // Capturamos todas las ventas:
         for(Venta venta : listaVentas)
@@ -161,7 +161,7 @@ public class VentaProductoService implements iVentaProductoService{
         else{
         
         ventaDTO.setCodigo_venta(ventaMaxima.getCodigo_venta());
-        ventaDTO.setTotal(maxVenta);
+        ventaDTO.setTotal(montoMaximo);
         ventaDTO.setCantidad_productos(ventaMaxima.getListaProductos().size());
         ventaDTO.setNombre_cliente(ventaMaxima.getUnCliente().getNombre());
         ventaDTO.setApellido_cliente(ventaMaxima.getUnCliente().getApellido());
