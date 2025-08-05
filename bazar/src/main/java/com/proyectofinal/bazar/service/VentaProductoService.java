@@ -2,14 +2,18 @@ package com.proyectofinal.bazar.service;
 
 import com.proyectofinal.bazar.dto.ResumenVentasDTO;
 import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
+import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
 import com.proyectofinal.bazar.model.VentaProducto;
+import com.proyectofinal.bazar.model.VentaProductoID;
+import com.proyectofinal.bazar.repository.iProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+//import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +27,50 @@ public class VentaProductoService implements iVentaProductoService{
     @Autowired
     private iVentaRepository ventaRepo;
     
+    @Autowired
+    private iProductoRepository productRepo;
+    
     
     @Override
     public VentaProducto saveVentaProducto(VentaProducto ventaProducto) {
-        return ventaProductoRepo.save(ventaProducto);
+        // Validamos el producto:
+        Long idProducto = ventaProducto.getProducto().getCodigo_producto();
+        Producto producto = productRepo.findById(idProducto).orElse(null);
+        
+        if(producto.getCantidad_disponible() < ventaProducto.getCantidadVendida())
+        {
+            throw new RuntimeException("Stock insuficiente para el producto: "+ producto.getNombre());
+        }
+        
+        // Validamos para guardar la venta:
+        Venta venta = ventaProducto.getVenta();
+        
+        if(venta.getCodigo_venta()==null)
+        {
+            ventaRepo.save(venta);
+        }
+        
+        // Calculamos el total y seteamos relaciones completas
+        ventaProducto.setProducto(producto);
+        ventaProducto.setVenta(venta);
+        ventaProducto.setPrecioUnitario(producto.getCosto());
+        ventaProducto.setTotal(producto.getCosto()*ventaProducto.getCantidadVendida());
+        
+        // Creamos la tupla (clave compuesta):
+        VentaProductoID id = new VentaProductoID(venta.getCodigo_venta(),producto.getCodigo_producto());
+        ventaProducto.setId(id);
+        
+        
+        // Guardamos el VentaProducto, entendiendo que se completó la compra
+        ventaProductoRepo.save(ventaProducto);
+        
+        // Y actualizamos stock:
+        producto.setCantidad_disponible(producto.getCantidad_disponible()-ventaProducto.getCantidadVendida());
+        productRepo.save(producto);
+       
+        return ventaProducto;
     }
-    // Este método puede tener problemas de duplicados
+    
     // Puedes utilizar un Set para controlar el no meter una misma venta si tiene más de 1 producto
     @Override
     public List<Venta> findVentaByDate(LocalDate fecha_venta) {

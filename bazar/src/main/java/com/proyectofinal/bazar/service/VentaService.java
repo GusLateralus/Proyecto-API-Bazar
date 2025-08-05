@@ -6,13 +6,13 @@ package com.proyectofinal.bazar.service;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.model.Venta;
 import com.proyectofinal.bazar.model.VentaProducto;
-import com.proyectofinal.bazar.repository.iProductoRepository;
-import com.proyectofinal.bazar.repository.iVentaProductoRepository;
+//import com.proyectofinal.bazar.repository.iProductoRepository;
+//import com.proyectofinal.bazar.repository.iVentaProductoRepository;
 import com.proyectofinal.bazar.repository.iVentaRepository;
 //import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +22,11 @@ public class VentaService implements iVentaService{
     @Autowired
     private iVentaRepository ventaRepo;
     
-    @Autowired
+    /*@Autowired
     private iProductoRepository productRepo;
     
     @Autowired
-    private iVentaProductoRepository ventaProductRepo; 
+    private iVentaProductoRepository ventaProductRepo; */
     
 
     @Override
@@ -34,7 +34,7 @@ public class VentaService implements iVentaService{
         // Implementamos la funcionalidad para reducir el stock de los productos vendidos.
         // La lista de productos que viene es la del JSON, por lo que, cada producto viene como un objeto incompleto
         // Está bien, la idea es llenar con puros IDs, pero entonces debes traer el objeto completo para operar bien
-        List<VentaProducto> listaProductosIntermedia = venta.getListaProductos();
+        /*List<VentaProducto> listaProductosIntermedia = venta.getListaProductos();
         List<String> productosNoDisponibles;
         productosNoDisponibles = new ArrayList<>(); // Sólo así se quitó el warning
         List<Producto> productosVendidos; // Lista para productos vendidos
@@ -93,7 +93,9 @@ public class VentaService implements iVentaService{
         else
         {
             return "Venta registrada parcialmente. Sin stock: "+String.join(", ", productosNoDisponibles);
-        }
+        }*/
+        ventaRepo.save(venta);
+        return "Venta guardad con éxito";
     }
 
     @Override
