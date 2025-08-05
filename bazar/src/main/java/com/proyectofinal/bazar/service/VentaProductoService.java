@@ -5,7 +5,7 @@ import com.proyectofinal.bazar.dto.VentaProductClienteDTO;
 import com.proyectofinal.bazar.model.Venta;
 import com.proyectofinal.bazar.model.VentaProducto;
 import com.proyectofinal.bazar.repository.iVentaProductoRepository;
-//import com.proyectofinal.bazar.repository.iVentaRepository;
+import com.proyectofinal.bazar.repository.iVentaRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +19,9 @@ public class VentaProductoService implements iVentaProductoService{
     
     @Autowired
     private iVentaProductoRepository ventaProductoRepo;
+    
+    @Autowired
+    private iVentaRepository ventaRepo;
     
     
     @Override
@@ -79,7 +82,50 @@ public class VentaProductoService implements iVentaProductoService{
 
     @Override
     public VentaProductClienteDTO traerMontoMasAlto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+        List<Venta> listaVentas = ventaRepo.findAll();
+        VentaProductClienteDTO ventaDTO = new VentaProductClienteDTO();
+        Venta ventaMaxima = null;
+        double montoMaximo= 0;
+        //List<Venta> listaVentas = new ArrayList<>();
+        
+        double maxVenta = Double.MIN_VALUE;
+        
+        // Capturamos todas las ventas:
+        for(Venta venta : listaVentas)
+        {
+            double totalVenta = 0;
+            
+            for(VentaProducto vp : venta.getListaProductos())
+            {
+                totalVenta += vp.getTotal();
+            }
+            
+            if(totalVenta > montoMaximo)
+            {
+                montoMaximo = totalVenta;
+                ventaMaxima = venta;
+            
+            }
+            
+        }
+        
+        // Si no encuentra una ventaMaxima (porque no hay ventas) entonces arroja null
+        if( ventaMaxima==null)
+        {
+            return null;
+        }
+        
+        else{
+        
+        ventaDTO.setCodigo_venta(ventaMaxima.getCodigo_venta());
+        ventaDTO.setTotal(maxVenta);
+        ventaDTO.setCantidad_productos(ventaMaxima.getListaProductos().size());
+        ventaDTO.setNombre_cliente(ventaMaxima.getUnCliente().getNombre());
+        ventaDTO.setApellido_cliente(ventaMaxima.getUnCliente().getApellido());
+        return ventaDTO;
+        }
+    
     }
 
     
