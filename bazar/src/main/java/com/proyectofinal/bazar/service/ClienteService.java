@@ -14,23 +14,27 @@ public class ClienteService implements iClienteService{
     private iClienteRepository clienteRepo;
     
 
+    // Asegúrate que no guardes al mismo cliente 2 veces, e igual, si quieres devuelve un JSON
     @Override
     public String saveCliente(Cliente clien) {
         clienteRepo.save(clien);
         return "Datos del cliente guardados con éxito";
     }
 
+    // Mejora la respuesta con un DTO
     @Override
     public Cliente findCliente(Long id_cliente) {
         return clienteRepo.findById(id_cliente).orElse(null);
     }
 
+    // Lo mismo, usa un DTO
     @Override
     public List<Cliente> traerClientes() {
         return clienteRepo.findAll();
         
     }
 
+    // Podrías devolver un JSON
     @Override
     public String updateCliente(Cliente clien) {
         this.saveCliente(clien);
