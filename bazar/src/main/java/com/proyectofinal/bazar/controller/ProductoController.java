@@ -1,6 +1,7 @@
 
 package com.proyectofinal.bazar.controller;
 
+import com.proyectofinal.bazar.dto.ProductoDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.service.iProductoService;
 import java.util.List;
@@ -21,21 +22,21 @@ public class ProductoController {
     
     // Crear producto
     @PostMapping("productos/crear")
-    public String saveProducto(@RequestBody Producto product)
+    public ProductoDTO saveProducto(@RequestBody ProductoDTO dto)
     {
-        return productService.saveProducto(product);
+        return productService.saveProducto(dto);
     }
     
     // Traer un producto
     @GetMapping("productos/traer/{id_producto}")
-    public Producto traerProducto(@PathVariable Long id_producto)
+    public ProductoDTO traerProducto(@PathVariable Long id_producto)
     {
         return productService.findProducto(id_producto);
     }
     
     // Traer lista de productos
     @GetMapping("productos/traer")
-    public List<Producto> traerListaProductos()
+    public List<ProductoDTO> traerListaProductos()
     {
         return productService.traerProductos();
     }
@@ -56,7 +57,7 @@ public class ProductoController {
     
     // Productos cuya cantidad disponible sea menor a 5:
     @GetMapping("productos/traer/menosDeCinco")
-    public List<Producto> traerProductosDisponiblesMenores5()
+    public List<ProductoDTO> traerProductosDisponiblesMenores5()
     {
         return productService.productosDisponiblesMenores5();
     }

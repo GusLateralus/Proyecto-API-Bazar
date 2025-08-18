@@ -1,6 +1,7 @@
 
 package com.proyectofinal.bazar.service;
 
+import com.proyectofinal.bazar.dto.ProductoDTO;
 import com.proyectofinal.bazar.model.Producto;
 import com.proyectofinal.bazar.repository.iProductoRepository;
 import java.util.ArrayList;
@@ -11,33 +12,87 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductoService implements iProductoService{
     
-    @Autowired
+    @Autowired 
     private iProductoRepository productRepo;
 
-    // Este método parece que funciona correctamente, tal vez cosas que cambiaría sería ponerle una restricción para no registrar el mismo producto 2 veces
-    // Otra cosa que podrías hacer es devolver un JSON en lugar de un String
     @Override
-    public String saveProducto(Producto product) {
-        productRepo.save(product);
-        return "Producto guardado con éxito";
+    public ProductoDTO saveProducto(ProductoDTO dto) {
+        Producto producto = productRepo.findByNombre(dto.getNombre()).orElse(new Producto());
+        
+        producto.setNombre(dto.getNombre());
+        producto.setCosto(dto.getCosto());
+        
+        // Si no es null, quiere decir que ya existía, entonces si es así, le sumamos la cantidad y actualizamos.
+        if(producto.getCodigo_producto() != null){ 
+            producto.setCantidad_disponible(producto.getCantidad_disponible()+dto.getCantidad_disponible());
+        }
+        else{
+            producto.setCantidad_disponible(dto.getCantidad_disponible());  
+        }
+        
+        Producto savedProduct = productRepo.save(producto); // Este es el que irá a la DB
+        
+        // Y creamos el objeto que vamos a retornar en el JSON
+        ProductoDTO result = new ProductoDTO();
+        result.setCodigo_producto(savedProduct.getCodigo_producto());
+        result.setNombre(savedProduct.getNombre());
+        result.setCosto(savedProduct.getCosto());
+        result.setCantidad_disponible(savedProduct.getCantidad_disponible());
+        
+        return result;
     }
 
-    // Si devuelves un JSON, asegúrate que no entre en un ciclo de recursión (usa un DTO)
+    
     @Override
-    public Producto findProducto(Long id_producto) {
-        return productRepo.findById(id_producto).orElse(null);
+    public ProductoDTO findProducto(Long id_producto) {
+        Producto product = productRepo.findById(id_producto).orElse(null);
+        
+        if(product == null){
+            
+            return null;
         }
+        else{
+        
+            ProductoDTO dto = new ProductoDTO();
+
+            dto.setCodigo_producto(product.getCodigo_producto());
+            dto.setNombre(product.getNombre());
+            dto.setCosto(product.getCosto());
+            dto.setCantidad_disponible(product.getCantidad_disponible());
+            
+            return dto;
+        }
+        
+        
+     }
 
     // Usa un DTO
     @Override
-    public List<Producto> traerProductos() {
-        return productRepo.findAll();
+    public List<ProductoDTO> traerProductos() {
+        List<Producto> listaProductos = productRepo.findAll();
+        List<ProductoDTO> listaDTO = new ArrayList<>();
+        
+        
+        for(Producto p: listaProductos){
+            ProductoDTO dto = new ProductoDTO();
+            dto.setCodigo_producto(p.getCodigo_producto());
+            dto.setNombre(p.getNombre());
+            dto.setCosto(p.getCosto());
+            dto.setCantidad_disponible(p.getCantidad_disponible());
+            
+            listaDTO.add(dto);
         }
+         
+         
+        
+        return listaDTO;
+               
+     }
 
     // Bien, quizás podrías mejorarlo devolviendo el JSON
     @Override
     public String updateProducto(Producto product) {
-        this.saveProducto(product);
+        productRepo.save(product);
         return "Datos actualizados con éxito";
     }
 
@@ -49,10 +104,12 @@ public class ProductoService implements iProductoService{
 
     // Mejora la respuesta con un DTO
     @Override
-    public List<Producto> productosDisponiblesMenores5() {
+    public List<ProductoDTO> productosDisponiblesMenores5() {
         
         List<Producto> listaProductos = productRepo.findAll();
         List<Producto> listaProductosDisponibles = new ArrayList<>();
+        List<ProductoDTO> dtos = new ArrayList<>();
+        
         
         for(Producto producto : listaProductos)
         {
@@ -61,11 +118,21 @@ public class ProductoService implements iProductoService{
                 listaProductosDisponibles.add(producto);
             }
         
+        }
         
+        for(Producto p:listaProductosDisponibles){
+        
+            ProductoDTO dto = new ProductoDTO();
+            dto.setCodigo_producto(p.getCodigo_producto());
+            dto.setNombre(p.getNombre());
+            dto.setCosto(p.getCosto());
+            dto.setCantidad_disponible(p.getCantidad_disponible());
+            
+            dtos.add(dto);
         }
         
         
-        return listaProductosDisponibles;
+        return dtos;
         
     }
     
