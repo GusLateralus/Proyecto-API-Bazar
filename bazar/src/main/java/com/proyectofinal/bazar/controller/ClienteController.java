@@ -1,10 +1,15 @@
 
 package com.proyectofinal.bazar.controller;
 
+import com.proyectofinal.bazar.dto.ClienteDTO;
+import com.proyectofinal.bazar.exceptions.ClienteAlreadyExistsException;
 import com.proyectofinal.bazar.model.Cliente;
 import com.proyectofinal.bazar.service.iClienteService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +24,20 @@ public class ClienteController {
     @Autowired
     iClienteService clienteServ;
     
-    // Crear cliente
+    // Crear cliente 
     @PostMapping("clientes/crear")
-    public String saveCliente(@RequestBody Cliente cliente)
+    public ResponseEntity<?> saveCliente(@RequestBody ClienteDTO dto)
     {
-        return clienteServ.saveCliente(cliente);
+        // El signo de interrogación es un wildcard (comodín), hace que ResponseEntity espere cualquier tipo de valor
+        try {
+            ClienteDTO cliente = clienteServ.saveCliente(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+            
+        } catch (ClienteAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error",e.getMessage()));
+            
+        }
+        //return clienteServ.saveCliente(cliente); Cambiamos a ResponseEntity para un mejor control del JSON en caso de una excepción.
     }
     
     // Traer un cliente

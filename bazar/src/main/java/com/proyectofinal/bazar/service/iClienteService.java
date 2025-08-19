@@ -1,6 +1,7 @@
 
 package com.proyectofinal.bazar.service;
 
+import com.proyectofinal.bazar.dto.ClienteDTO;
 import com.proyectofinal.bazar.model.Cliente;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public interface iClienteService {
 
     // Create
-    public String saveCliente(Cliente clien);
+    public ClienteDTO saveCliente(ClienteDTO dto);
     
     // Read
     // Un solo cliente:
