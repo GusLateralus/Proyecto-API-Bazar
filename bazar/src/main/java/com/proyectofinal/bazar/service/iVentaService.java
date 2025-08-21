@@ -12,7 +12,7 @@ import java.util.List;
 public interface iVentaService {
     
     // Create
-    public String saveVenta(Venta venta);
+    public Venta saveVenta(Venta venta);
     
     // Read
     // Una sola venta:

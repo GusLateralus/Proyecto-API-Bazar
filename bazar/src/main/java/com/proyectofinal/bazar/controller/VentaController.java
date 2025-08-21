@@ -25,7 +25,7 @@ public class VentaController {
     
     // Crear venta
     @PostMapping("ventas/crear")
-    public String saveVenta(@RequestBody Venta venta)
+    public Venta saveVenta(@RequestBody Venta venta)
     {
         return ventaServ.saveVenta(venta);
     }

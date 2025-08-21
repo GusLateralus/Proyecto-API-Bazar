@@ -30,7 +30,7 @@ public class VentaService implements iVentaService{
     
 
     @Override
-    public String saveVenta(Venta venta) {
+    public Venta saveVenta(Venta venta) {
         // Implementamos la funcionalidad para reducir el stock de los productos vendidos.
         // La lista de productos que viene es la del JSON, por lo que, cada producto viene como un objeto incompleto
         // Está bien, la idea es llenar con puros IDs, pero entonces debes traer el objeto completo para operar bien
@@ -94,8 +94,8 @@ public class VentaService implements iVentaService{
         {
             return "Venta registrada parcialmente. Sin stock: "+String.join(", ", productosNoDisponibles);
         }*/
-        ventaRepo.save(venta);
-        return "Venta guardad con éxito";
+        return ventaRepo.save(venta);
+        //return "Venta guardada con éxito";
     }
 
     @Override

@@ -42,14 +42,14 @@ public class ClienteController {
     
     // Traer un cliente
     @GetMapping("clientes/traer/{id_cliente}")
-    public Cliente traerCliente(@PathVariable Long id_cliente)
+    public ClienteDTO traerCliente(@PathVariable Long id_cliente)
     {
         return clienteServ.findCliente(id_cliente);
     }
     
     // Traer lista de clientes
     @GetMapping("clientes/traer")
-    public List<Cliente> traerListaClientes()
+    public List<ClienteDTO> traerListaClientes()
     {
         return clienteServ.traerClientes();
     }

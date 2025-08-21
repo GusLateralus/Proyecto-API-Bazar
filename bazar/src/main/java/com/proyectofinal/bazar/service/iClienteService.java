@@ -13,10 +13,10 @@ public interface iClienteService {
     
     // Read
     // Un solo cliente:
-    public Cliente findCliente(Long id_cliente);
+    public ClienteDTO findCliente(Long id_cliente);
     
     // Muchos clientes:
-    public List<Cliente> traerClientes();
+    public List<ClienteDTO> traerClientes();
     
     //Update
     public String updateCliente(Cliente clien);

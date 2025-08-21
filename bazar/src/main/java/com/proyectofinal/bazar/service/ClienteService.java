@@ -5,6 +5,7 @@ import com.proyectofinal.bazar.dto.ClienteDTO;
 import com.proyectofinal.bazar.exceptions.ClienteAlreadyExistsException;
 import com.proyectofinal.bazar.model.Cliente;
 import com.proyectofinal.bazar.repository.iClienteRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,17 +44,48 @@ public class ClienteService implements iClienteService{
         
     }
 
-    // Mejora la respuesta con un DTO
+    // Puedes personalizarlo con un status code propio en caso que no encuentre un cliente.
     @Override
-    public Cliente findCliente(Long id_cliente) {
-        return clienteRepo.findById(id_cliente).orElse(null);
+    public ClienteDTO findCliente(Long id_cliente) {
+        Cliente clien = clienteRepo.findById(id_cliente).orElse(null);
+        
+        if(clien == null)    
+        {
+            return null;
+        
+        }
+        else{
+            
+            ClienteDTO dto = new ClienteDTO();
+            dto.setId_cliente(clien.getId_cliente());
+            dto.setNombre(clien.getNombre());
+            dto.setApellido(clien.getApellido());
+            dto.setDni(clien.getDni());
+            
+            return dto;
+        }
+        
     }
 
     // Lo mismo, usa un DTO
     @Override
-    public List<Cliente> traerClientes() {
-        return clienteRepo.findAll();
+    public List<ClienteDTO> traerClientes() {
+        //return clienteRepo.findAll();
+        List<Cliente> listaClientes = clienteRepo.findAll();
+        List<ClienteDTO> dtos = new ArrayList<>();
         
+        for(Cliente c : listaClientes)
+        {
+            ClienteDTO dto = new ClienteDTO();
+            dto.setId_cliente(c.getId_cliente());
+            dto.setNombre(c.getNombre());
+            dto.setApellido(c.getApellido());
+            dto.setDni(c.getDni());
+            
+            dtos.add(dto);
+        }
+        
+        return dtos;
     }
 
     // Podrías devolver un JSON
